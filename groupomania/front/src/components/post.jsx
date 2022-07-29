@@ -5,7 +5,20 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
 import LikeButton from './like';
 import { Link } from 'react-router-dom';
 
-function Post ({author, authorId, text, image, authorImage, modify, id, liked, deletePost, confirmationMessage}) {
+const ModifiableBlock = ({modifiable, authorId, deletePost, modify, id}) => {
+  if(!modifiable){
+      return null;
+  }
+  return (<span id='post-settings' className='home-page__content__post__bottom__icon'><FontAwesomeIcon
+      className='home-page__content__post__bottom__icon__font' icon={faEllipsis}/>
+        <div id='post-settings__menu' data-set={authorId}>
+          <Link to={`/newpost?id=${id}`}><p onClick={() => modify(id)}>Modifier</p></Link>
+          <p onClick={() => deletePost(id)}>Supprimer</p>
+        </div>
+    </span>)
+}
+
+function Post ({author, authorId, text, image, authorImage, modify, id, liked, deletePost, modifiable}) {
   return (
     <article className='home-page__content__post' >
         <div className='home-page__content__post__top'>
@@ -30,12 +43,13 @@ function Post ({author, authorId, text, image, authorImage, modify, id, liked, d
           authorId={authorId}
           liked={liked}
           />
-          <span id='post-settings' className='home-page__content__post__bottom__icon'><FontAwesomeIcon className='home-page__content__post__bottom__icon__font' icon={faEllipsis} />
-          <div id='post-settings__menu' data-set={authorId}>
-            <Link to={`/newpost?id=${id}`}><p onClick={() => modify(id)}>Modifier</p></Link>
-            <p onClick={() => deletePost(id)}>Supprimer</p>
-          </div>  
-          </span>
+          <ModifiableBlock 
+            id={id}
+            modifiable={modifiable}
+            authorId={authorId}
+            modify={modify}
+            deletePost={deletePost}
+          />
         </div>
     </article>
   )

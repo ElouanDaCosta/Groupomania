@@ -10,6 +10,7 @@ module.exports = (req, res, next) => {
       throw 'User ID non valide';
     } else {
       req.userId = userId;
+      req.isAdmin = decodedToken.isAdmin;
       next();
     }
   } catch (error) {

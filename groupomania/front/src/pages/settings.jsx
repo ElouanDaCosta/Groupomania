@@ -31,13 +31,12 @@ function Settings () {
   const deleteUserAction = () => {
     deleteUser()
     .then(response => {
-      if (response.status === 205) {
-        navigate('/register');
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-      } else {
-        console.log('error');
-      }
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      navigate('/login');
+    })
+    .catch(error => {
+      console.log(error);
     })
   }
 

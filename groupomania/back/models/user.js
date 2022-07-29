@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     image: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: 'https://res.cloudinary.com/dzqbzqgjm/image/upload/v1599098981/default-profile-picture_qjqjqj.png',
+      defaultValue: '',
     },
     password: {
       type: DataTypes.STRING,
@@ -27,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
     passwordConfirmation: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     }
   })
   return User

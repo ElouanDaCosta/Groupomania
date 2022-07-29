@@ -23,10 +23,16 @@ exports.create = (req, res, next) => {
 }
 
 exports.getAll = (req, res, next) => {
+  let orderBy = ['createdAt', 'DESC'];
+  if (req.query.order === "popularity") {
+    orderBy = [db.sequelize.col('nbLikes'), 'DESC'];
+  }
   Post.findAll({
     attributes: {
       include : [
-        [db.sequelize.literal(`(SELECT 1 FROM likes WHERE likes.userId = ${req.userId} AND likes.postId = post.id)`), 'liked']
+        [db.sequelize.literal(`(SELECT post.userId = ${req.userId} OR users.isAdmin = 1 FROM users WHERE users.id = ${req.userId})`), 'modifiable'],
+        [db.sequelize.literal(`(SELECT 1 FROM likes WHERE likes.userId = ${req.userId} AND likes.postId = post.id)`), 'liked'],
+        [db.sequelize.literal(`(SELECT count(*) FROM likes WHERE likes.postId = post.id)`), 'nbLikes'],
       ]
     },
     include: [{
@@ -34,6 +40,7 @@ exports.getAll = (req, res, next) => {
     }, {
       model: Likes,
     }],
+    order: [orderBy]
   })
     .then((posts) =>  res.status(200).json(posts))
     .catch(error => res.status(400).json({ error }));
@@ -55,7 +62,7 @@ exports.getOne = (req, res, next) => {
 exports.deleteOne = (req, res, next) => {
   Post.findOne({where:{ id: req.params.id }})
     .then(Post => {
-      if (req.userId === Post.userId) {
+      if (req.userId === Post.userId || req.isAdmin) {
         if (Post.image !== null) {
           const imageName = Post.image.split('/images/')[1];
           fs.unlink(`images/${imageName}`, (error) => {
@@ -80,7 +87,7 @@ exports.deleteOne = (req, res, next) => {
 exports.updateOne = (req, res, next) => {
   Post.findOne({where:{ id: req.params.id }})
     .then(Post => {
-      if (req.userId === Post.userId) {
+      if (req.userId === Post.userId || req.isAdmin) {
         if (req.file) {
           const imageName = Post.image.split('/images/')[1];
           fs.unlink(`images/${imageName}`, (error) => {

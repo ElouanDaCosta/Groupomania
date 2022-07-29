@@ -51,7 +51,7 @@ exports.login = (req, res, next) => {
           res.status(200).json({
             userId: user.id,
             token: jwt.sign(
-              { userId: user.id },
+              { userId: user.id, isAdmin: user.isAdmin },
               process.env.TOKEN,
               { expiresIn: '24h' }
             )
@@ -82,7 +82,8 @@ exports.updateUser = (req, res, next) => {
         const imageName = user.image.split('/images/')[1];
           fs.unlink(`images/${imageName}`, (error) => {
             if (error) {
-              return res.status(500).json({ error: 'Erreur lors de la suppression de l\'image' });
+              res.status(500).json({ error: 'Erreur lors de la suppression de l\'image' });
+              return
             }
           })  
         }
@@ -96,7 +97,8 @@ exports.updateUser = (req, res, next) => {
           .then(() => res.status(200).json({ message: 'Utilisateur modifié !' }))
           .catch(error => res.status(400).json({ error }));
       } else {
-        return res.status(401).json({ error: 'Vous n\'avez pas le droit d\'effectuer cette action !' });
+        res.status(401).json({ error: 'Vous n\'avez pas le droit d\'effectuer cette action !' });
+        return
       }
     })
 };
@@ -122,14 +124,13 @@ exports.deleteUser = (req, res, next) => {
   User.findOne ({where: {id: req.params.id}})
     .then(user => {
       if (req.userId === user.id) {
-        if (user.image !== 'https://res.cloudinary.com/dzqbzqgjm/image/upload/v1599098981/default-profile-picture_qjqjqj.png') {
         const imageName = user.image.split('/images/')[1];
           fs.unlink(`images/${imageName}`, (error) => {
             if (error) {
-              return res.status(500).json({ error: 'Erreur lors de la suppression de l\'image' });
+              res.status(500).json({ error: 'Erreur lors de la suppression de l\'image' });
+              return
             }
           })
-        }
         Post.destroy({where: {userId: req.params.id}})
           .then(() => {
             res.status(200).json({ message: 'Post of the user has been deleted' });
@@ -139,7 +140,8 @@ exports.deleteUser = (req, res, next) => {
           .then(() => res.status(205).json({ message: 'User deleted' }))
           .catch(error => res.status(500).json({ error }));
       } else {
-        return res.status(401).json({ error: 'Vous n\'avez pas le droit d\'effectuer cette action !' });
+        res.status(401).json({ error: 'Vous n\'avez pas le droit d\'effectuer cette action !' });
+        return
       }
     })
     .catch(error => res.status(500).json({ error }));

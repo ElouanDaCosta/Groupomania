@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 function NewPost() {
   const [img, setImg] = useState();
   const [imgForm, setImgForm] = useState();
+  const [textForm, setTextForm] = useState();
   const navigate = useNavigate();
   const onImageChange = (e) => {
     const [file] = e.target.files;
@@ -26,7 +27,7 @@ function NewPost() {
       .then(response => {
         response.json().then(data => {
           setImgForm(data.post.image);
-          document.querySelector('textarea[name="text"]').value = data.post.text;
+          setTextForm(data.post.text);
         });
       })
       .catch(error => {
@@ -68,6 +69,7 @@ function NewPost() {
       deleteImage={deleteImage}
       img={img}
       imgForm={imgForm}
+      textForm={textForm}
       HandleSubmit={(e, post) => HandleSubmit(e, post)}
       />
     </React.StrictMode>
