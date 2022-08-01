@@ -26,9 +26,9 @@ function Home() {
     setSortedType(sortedType)
     getAll(sortedType)
       .then(response => {
-          response.json().then (data => {
-            setPosts(data);
-          });
+        response.json().then (data => {
+          setPosts(data);
+        });
       })
   }
 

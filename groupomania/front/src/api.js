@@ -31,10 +31,10 @@ export const login = () => {
   )
 }
 
-export const getAll = () => {
+export const getAll = (order) => {
   const token = localStorage.getItem('token')
   return fetch (
-    'http://localhost:4000/api/post/', {
+    `http://localhost:4000/api/post/?order=${order}`, {
     method: 'GET',
     headers: {
       "Accept": "application/json",
