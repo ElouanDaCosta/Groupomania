@@ -26,6 +26,7 @@ function HomeBlock ({posts, sortPosts, sortedType, modify, deletePost, confirmat
               liked={post.liked}
               deletePost={deletePost}
               modifiable={post.modifiable}
+              nbLikes={post.nbLikes}
           />)}
         </div>
         <NewPostButton />

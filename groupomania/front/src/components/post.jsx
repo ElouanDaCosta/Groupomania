@@ -18,7 +18,7 @@ const ModifiableBlock = ({modifiable, authorId, deletePost, modify, id}) => {
     </span>)
 }
 
-function Post ({author, authorId, text, image, authorImage, modify, id, liked, deletePost, modifiable}) {
+function Post ({author, authorId, text, image, authorImage, modify, id, liked, deletePost, modifiable, nbLikes}) {
   return (
     <article className='home-page__content__post' >
         <div className='home-page__content__post__top'>
@@ -42,6 +42,7 @@ function Post ({author, authorId, text, image, authorImage, modify, id, liked, d
           id={id}
           authorId={authorId}
           liked={liked}
+          nbLikes={nbLikes}
           />
           <ModifiableBlock 
             id={id}
