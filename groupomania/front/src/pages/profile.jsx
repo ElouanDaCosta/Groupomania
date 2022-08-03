@@ -7,6 +7,10 @@ function SinglePost() {
   const [imgProfile, setImgProfile] = useState();
   const [username, setUsername] = useState();
 
+  if (localStorage.getItem('token') === null) {
+    window.location.href= '/login';
+  }
+
   getUser(userId)
     .then(response => {
       response.json().then(data => {

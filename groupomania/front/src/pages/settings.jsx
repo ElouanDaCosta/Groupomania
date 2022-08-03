@@ -7,6 +7,11 @@ import { deleteUser } from '../api';
 function Settings () {
   const [isConfirmation, setIsConfirmation] = useState(false);
   const navigate = useNavigate();
+
+  if (localStorage.getItem('token') === null) {
+    window.location.href= '/login';
+  }
+
   const handleSubmit = event => {
     logout()
     .then(response => {
@@ -24,7 +29,8 @@ function Settings () {
     if (!isConfirmation) {
       document.querySelector('.confirmation__box').style.display = 'flex';
   } else {
-      document.querySelector('.confirmation__box').style.display = 'none';
+    setIsConfirmation(false);
+    document.querySelector('.confirmation__box').style.display = 'none';
   }
   }
 

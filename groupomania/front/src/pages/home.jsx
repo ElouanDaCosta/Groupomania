@@ -5,18 +5,21 @@ import { getAll, deletePost } from '../api';
 
 
 function Home() {
-    const [posts, setPosts] = useState([]);
-    const [sortedType, setSortedType] = useState('date')
+  const [posts, setPosts] = useState([]);
+  const [sortedType, setSortedType] = useState('date')
 
-    useEffect (() => {
-        getAll()
-        .then(response => {
-          response.json().then (data => {
-            setPosts(data);
-            return data;
-          });
-        })
-    }, [])
+  useEffect (() => {
+    getAll()
+      .then(response => {
+        response.json().then (data => {
+          if (response.status === 401) {
+            window.location.href= '/login';
+          }
+          setPosts(data);
+          return data;
+        });
+      })
+  }, [])
 
     const modify = (id) => {
       
@@ -32,27 +35,27 @@ function Home() {
       })
   }
 
-    const deletePostAction = (id) => {
-      deletePost(id)
-      .then(() => {
-        return getAll()
-      })
-      .then(response => {
-        response.json().then (data => {
-          setPosts(data);
-          return data;
-        });
-      })
-    }
+  const deletePostAction = (id) => {
+    deletePost(id)
+    .then(() => {
+      return getAll()
+    })
+    .then(response => {
+      response.json().then (data => {
+        setPosts(data);
+        return data;
+      });
+    })
+  }
 
   return (
     <React.StrictMode>
       <HomeBlock
-          modify={modify}
-          posts={posts}
-          sortedType={sortedType}
-          sortPosts={sortPosts}
-          deletePost={deletePostAction}
+        modify={modify}
+        posts={posts}
+        sortedType={sortedType}
+        sortPosts={sortPosts}
+        deletePost={deletePostAction}
       />
     </React.StrictMode>
   );

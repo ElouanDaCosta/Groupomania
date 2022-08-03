@@ -15,6 +15,10 @@ function NewPost() {
     setImg(file)
   };
 
+  if (localStorage.getItem('token') === null) {
+    window.location.href= '/login';
+  }
+
   const deleteImage = () => {
     setImg(null);
   }

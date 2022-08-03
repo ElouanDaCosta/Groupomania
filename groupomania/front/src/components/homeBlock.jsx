@@ -16,6 +16,7 @@ function HomeBlock ({posts, sortPosts, sortedType, modify, deletePost, confirmat
       <div className='home-page__content-menu'>
         <div className="home-page__content">
           {posts.map(post => <Post
+              key={post.id}
               id={post.id}
               authorId={post.userId}
               author={post.user.name}
