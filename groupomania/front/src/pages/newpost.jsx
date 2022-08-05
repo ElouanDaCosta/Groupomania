@@ -12,7 +12,6 @@ function NewPost() {
   const onImageChange = (e) => {
     const [file] = e.target.files;
     setImg(URL.createObjectURL(file));
-    setImg(file)
   };
 
   if (localStorage.getItem('token') === null) {
@@ -45,7 +44,6 @@ function NewPost() {
       modifyPost(id, post)
         .then(response => {
           response.json().then(data => {
-            console.log(data);
             navigate('/');
           });
         })
@@ -56,7 +54,6 @@ function NewPost() {
       create(post)
         .then(response => {
           response.json().then (data => {
-            console.log(data);
             navigate('/');
           })
         })

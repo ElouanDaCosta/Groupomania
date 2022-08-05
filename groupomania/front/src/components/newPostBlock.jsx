@@ -19,6 +19,11 @@ function NewPostBlock ({onImageChange, img, imgForm, textForm, deleteImage, Hand
     }
   }, [textForm, imgForm]);
 
+  const uploadImage = (e) => {
+    setImage(e.target.files[0]);
+    onImageChange(e);
+  }
+
   return (
     <section className='newpost-page'>
       <Header />
@@ -38,15 +43,15 @@ function NewPostBlock ({onImageChange, img, imgForm, textForm, deleteImage, Hand
           id='file-input'
           type='file'
           multiple={false}
-          onChange={(e) => 
-            setImage(e.target.files[0]
-          )}
+          onChange={(e) => {
+            uploadImage(e)
+          }}
           className='newpost-page__content__form__upload-image'
           ></input>
           <label for="file-input" className='newpost-page__content__form__upload-image__label'><FontAwesomeIcon className='newpost-page__content__form__upload-image__label__icon' icon={faImage} /></label>
           {img && (
             <div className='newpost-page__content__form__image-container'>
-              <img className='newpost-page__content__form__upload-image__img' src={image} alt='' />
+              <img className='newpost-page__content__form__upload-image__img' src={img} alt='' />
               <button className='newpost-page__content__form__upload-image__delete' onClick={deleteImage}>Supprimer</button>
             </div>
           )}

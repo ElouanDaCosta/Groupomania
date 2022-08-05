@@ -49,6 +49,11 @@
         width: 95%;
       }
 
+      @media screen and (min-width: 1441px) {
+        width: 80%;
+        margin-left: 275px;
+      }
+
       &__icon {
         color: $color-primary;
         font-size: 28px;
