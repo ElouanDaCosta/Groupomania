@@ -10,16 +10,33 @@ const Post = db.post;
 exports.signup = (req, res, next) => {
   User.findOne ({where: {email: req.body.email}})
     .then(user => {
+      //if the user already exists, return an error
       if (user) {
-        return res.status(409).json({ error: 'Email already exists' });
+        res.status(409).json({ error: 'Email already exists' });
+        return 
       }
+      //if the req.body.email is empty, return an error
       if (req.body.email === '') {
-        return res.status(400).json({ error: 'Veuillez entrez une addresse mail' });
-      } else if (req.body.passwordConfirmation === '') {
-          return res.status(412).json({ error: 'Veuillez confirmer le mot de passe' });
-      } else if (req.body.passwordConfirmation !== req.body.password) {
-          return res.status(412).json({ error: 'Les mots de passe ne correspondent pas !' });
-      } else {
+        res.status(400).json({ error: 'Veuillez entrez une addresse mail' });
+        return 
+      } 
+      //if the req.body.password is empty, return an error
+      else if (req.body.password === '') {
+        res.status(418).json({ error: 'Veuillez entrez un mot de passe' });
+        return 
+      }
+      //if the req.body.passwordConfirmation is empty, return an error
+      else if (req.body.passwordConfirmation === '') {
+        res.status(412).json({ error: 'Veuillez confirmer le mot de passe' });
+        return 
+      } 
+      //if the req.body.password and req.body.passwordConfirmation are different, return an error
+      else if (req.body.passwordConfirmation !== req.body.password) {
+        res.status(412).json({ error: 'Les mots de passe ne correspondent pas !' });
+        return 
+      } 
+      // hash the req.body.password and create a new user
+      else {
         bcrypt.hash(req.body.password, 10)
         .then(hash => {
           const user = User.build ({
@@ -40,14 +57,17 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
   User.findOne ({where: {email: req.body.email}})
     .then(user => {
+      // if the user doesn't exist, return an error
       if (!user) {
         return res.status(401).json({ error: 'Utilisateur non trouvé !' });
       }
       bcrypt.compare(req.body.password, user.password)
         .then(valid => {
+          // if the password is invalid, return an error
           if (!valid) {
             return res.status(401).json({ error: 'Mot de passe incorrect !' });
           }
+          // if the password is valid, return a token
           res.status(200).json({
             userId: user.id,
             token: jwt.sign(
@@ -77,7 +97,9 @@ exports.logout = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
   User.findOne ({where: {id: req.userId}})
     .then(user => {
+      //if the req.userId is equal to the target userId, execute the function
       if (req.userId === user.id) {
+        //if there is a file, used multer to delete the old file and save the new
         if (req.file) {
         const imageName = user.image.split('/images/')[1];
           fs.unlink(`images/${imageName}`, (error) => {
@@ -89,14 +111,18 @@ exports.updateUser = (req, res, next) => {
         }
         const temp = JSON.stringify(req.body);
         const userObject = JSON.parse(temp);
+        //ternaire operator to check if there is a file
         const useR = req.file ? {
+          //using decomposition to copy the property of an source object on a new object
           ...userObject,
           image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         } : {...userObject,};
         User.update(useR, {where:{ id: req.params.id }})
           .then(() => res.status(200).json({ message: 'Utilisateur modifié !' }))
           .catch(error => res.status(400).json({ error }));
-      } else {
+      }
+      //if you are not the user you can't update it
+      else {
         res.status(401).json({ error: 'Vous n\'avez pas le droit d\'effectuer cette action !' });
         return
       }
@@ -123,6 +149,7 @@ exports.getOne = (req, res, next) => {
 exports.deleteUser = (req, res, next) => {
   User.findOne ({where: {id: req.params.id}})
     .then(user => {
+      //if the req user id is equal to the user id, execute the function
       if (req.userId === user.id) {
         const imageName = user.image.split('/images/')[1];
           fs.unlink(`images/${imageName}`, (error) => {
@@ -131,6 +158,7 @@ exports.deleteUser = (req, res, next) => {
               return
             }
           })
+          //destroy all the posts of the user
         Post.destroy({where: {userId: req.params.id}})
           .then(() => {
             res.status(200).json({ message: 'Post of the user has been deleted' });
@@ -140,6 +168,7 @@ exports.deleteUser = (req, res, next) => {
           .then(() => res.status(205).json({ message: 'User deleted' }))
           .catch(error => res.status(500).json({ error }));
       } else {
+        //if you are not the user you can't delete it
         res.status(401).json({ error: 'Vous n\'avez pas le droit d\'effectuer cette action !' });
         return
       }

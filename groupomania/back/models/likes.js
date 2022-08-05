@@ -4,6 +4,9 @@ const {
 } = require('sequelize');
 const user = require('./user');
 const post = require('./post');
+
+
+//use like model to create connection between post and user table
 module.exports = (sequelize, DataTypes) => {
   class likes extends Model {
     /**
