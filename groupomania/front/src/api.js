@@ -1,3 +1,4 @@
+//the fetch request for the signup
 export const signup = () => {
   return fetch (
     'http://localhost:4000/api/auth/signup', {
@@ -6,7 +7,9 @@ export const signup = () => {
       "Accept": "application/json",
       "Content-type": "application/json"
     },
+    //transform the string body into a json
     body: JSON.stringify({
+      //use querySelector to get the value
       name: document.querySelector('input[name="username"]').value,
       email: document.querySelector('input[name="email"]').value,
       password: document.querySelector('input[name="password"]').value,
@@ -24,6 +27,7 @@ export const login = () => {
       "Content-type": "application/json"
     },
     body: JSON.stringify({
+      //use querySelector to get the value
       email: document.querySelector('input[name="email"]').value,
       password: document.querySelector('input[name="password"]').value
     })
@@ -32,6 +36,7 @@ export const login = () => {
 }
 
 export const getAll = (order) => {
+  //use the token in the localStorage to get all the post
   const token = localStorage.getItem('token')
   return fetch (
     `http://localhost:4000/api/post/?order=${order}`, {
@@ -61,7 +66,9 @@ export const getOne = (id) => {
 
 export const create = (post) => {
   const token = localStorage.getItem('token')
+  //use formData to get the value of the form to create a post
   const formData = new FormData()
+  //add the value of the post to the key of the form
   formData.append('text', post.text)
   formData.append('image', post.image)
   return fetch (
@@ -78,7 +85,9 @@ export const create = (post) => {
 
 export const modifyPost = (id, post) => {
   const token = localStorage.getItem('token')
+  //use formData to get the value of the form to modify a post that already exist
   const formData = new FormData()
+  //add the value of the post to the key of the form
   formData.append('text', post.text)
   formData.append('image', post.image)
       return fetch (
@@ -152,7 +161,9 @@ export const getUser = (user) => {
 export const updateUser = ( user) => {
   const token = localStorage.getItem('token')
   const userId = localStorage.getItem('user')
+  //use formData to get the value of the form to modify a user
   const formData = new FormData()
+  //add the value of the user to the key of the form
   formData.append('name', user.name)
   formData.append('image', user.image)
   return fetch (

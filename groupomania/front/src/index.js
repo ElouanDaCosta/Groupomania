@@ -8,6 +8,7 @@ import Settings from './pages/settings';
 import NewPost from './pages/newpost';
 import Profile from './pages/profile';
 
+//all the route of the website with 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
