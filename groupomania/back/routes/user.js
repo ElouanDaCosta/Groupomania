@@ -5,9 +5,10 @@ const password = require('../middleware/password');
 const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
 
+//rateLimit to limit the connection, protection against brute force attack
 const connectionLimit = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // limit each IP to 100 requests per windowMs
+  max: 8, // limit each IP to 100 requests per windowMs
   message: 'Trop de connexions, veuillez réessayer dans quelques minutes'
 });
 

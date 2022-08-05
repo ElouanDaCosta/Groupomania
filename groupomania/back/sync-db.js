@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 
 const User = db.user
 
+//sync the db and create an admin user
 db.sequelize.sync({force : true}).then((err) => {
   if (err) {
     console.log(err)

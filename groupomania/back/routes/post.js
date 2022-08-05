@@ -4,6 +4,7 @@ const auth = require('../middleware/auth');
 
 const postCtrl = require('../controllers/post');
 
+//using multer for the files handling
 const multer = require('../middleware/multer-config');
 
 router.post ('/', auth, multer, postCtrl.create);
