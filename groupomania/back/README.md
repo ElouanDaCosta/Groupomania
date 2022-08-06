@@ -25,3 +25,7 @@ Create the database with all the tables and create the user admin.
 ## create an images folder in the back folder
 
 the images send to the API are saved in a images folder, you need to create it 
+
+## create a .env files 
+
+you need to create a .env file in the back folder and add your token like that : TOKEN= *your token string*
