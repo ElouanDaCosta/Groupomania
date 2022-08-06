@@ -7,6 +7,7 @@ function ProfileBlock ({imgProfile, username, handleSubmit}) {
   const [image, setImage] = useState(null);
   const [name, setName] = useState('');
 
+  //use the useEffect hook to prevent sending null data to the api and always send the correct value
   useEffect(() => {
     if (username) {
       setName(username);

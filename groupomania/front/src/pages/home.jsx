@@ -5,13 +5,16 @@ import { getAll, deletePost } from '../api';
 
 
 function Home() {
+  //state to save the posts from the getAll and display them
   const [posts, setPosts] = useState([]);
+  //state to sort the posts depending on the sortedType in the getAll
   const [sortedType, setSortedType] = useState('date')
 
   useEffect (() => {
     getAll()
       .then(response => {
         response.json().then (data => {
+          //if you are not log, redirect to the login page
           if (response.status === 401) {
             window.location.href= '/login';
           }
@@ -25,6 +28,7 @@ function Home() {
       
     }
 
+  //use the sortedType state, get the sortedType in the getAll and sort the posts
   const sortPosts = (sortedType) => {
     setSortedType(sortedType)
     getAll(sortedType)
@@ -35,6 +39,7 @@ function Home() {
       })
   }
 
+  //when deleting a post, call the getAll to refresh the posts
   const deletePostAction = (id) => {
     deletePost(id)
     .then(() => {

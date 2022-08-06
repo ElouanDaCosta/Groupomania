@@ -15,6 +15,9 @@ function HomeBlock ({posts, sortPosts, sortedType, modify, deletePost, confirmat
       </div>
       <div className='home-page__content-menu'>
         <div className="home-page__content">
+          {/*
+          Use the map function to get all the value of the post and send them in props to the Post components  
+          */}
           {posts.map(post => <Post
               key={post.id}
               id={post.id}

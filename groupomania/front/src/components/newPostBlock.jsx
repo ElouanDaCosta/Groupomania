@@ -10,6 +10,7 @@ function NewPostBlock ({onImageChange, img, imgForm, textForm, deleteImage, Hand
   const [text, setText] = useState('');
   const [image, setImage] = useState(null);
 
+  //use the useEffect hook to prevent sending null data to the api and always send the correct value
   useEffect(() => {
     if (textForm) {
       setText(textForm);
@@ -19,6 +20,10 @@ function NewPostBlock ({onImageChange, img, imgForm, textForm, deleteImage, Hand
     }
   }, [textForm, imgForm]);
 
+  /*
+  function to call two function, one to send the image to the api
+  and the other to preview the image before sending it
+  */
   const uploadImage = (e) => {
     setImage(e.target.files[0]);
     onImageChange(e);
