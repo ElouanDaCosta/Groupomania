@@ -45,13 +45,24 @@
       &__upload-image {
         display: none;
         &__label {
-          width: 100%;
-          height: 50%;
+          width: 60%;
+          height: 10%;
           color: $color-primary;
           font-size: 28px;
         }
+        &__img {
+          width: 80%;
+          height: 80%;
+        }
       }
-
     }
   }
+}
+
+.newpost-page__content__form__image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  overflow: hidden;
 }
