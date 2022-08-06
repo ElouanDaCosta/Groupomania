@@ -25,6 +25,7 @@ function NewPost() {
 
   const deleteImage = () => {
     setImg(null);
+    setImgForm(null);
   }
 
   //get the value of the id params in the url
@@ -36,8 +37,8 @@ function NewPost() {
     getOne(id)
       .then(response => {
         response.json().then(data => {
-          setImgForm(data.post.image);
-          setTextForm(data.post.text);
+          setImgForm(data.image);
+          setTextForm(data.text);
         });
       })
       .catch(error => {

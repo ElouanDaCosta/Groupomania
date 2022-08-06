@@ -5,6 +5,10 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
 import LikeButton from './like';
 import { Link } from 'react-router-dom';
 
+/*
+if there is a modifiable props (if you are the author of the post or an admin) 
+show the settings option of the post, else hide them
+*/
 const ModifiableBlock = ({modifiable, authorId, deletePost, modify, id}) => {
   if(!modifiable){
       return null;

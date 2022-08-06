@@ -21,3 +21,7 @@ Run a development server using nodemon.
 ## run `npm run sync-db`
 
 Create the database with all the tables and create the user admin.
+
+## create an images folder in the back folder
+
+the images send to the API are saved in a images folder, you need to create it 
