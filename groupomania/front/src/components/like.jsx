@@ -9,6 +9,7 @@ const emptyHeart = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16
 
 function Like ({ authorId, id, liked, nbLikes}) {
   const [isLiked, setIsLiked] = useState(liked)
+  const [nbLikesState, setNbLikes] = useState(nbLikes)
 
   //function to set the state if there is a like
   const likeAction = (id) => {
@@ -16,9 +17,11 @@ function Like ({ authorId, id, liked, nbLikes}) {
       .then(res => {
         if (res.status === 201) {
           setIsLiked(1)
+          setNbLikes(nbLikesState + 1)
           console.log('like ok')
         } else if (res.status === 205) {
           setIsLiked(0)
+          setNbLikes(nbLikesState - 1)
           console.log('unlike ok')
         }
       })
@@ -31,7 +34,7 @@ function Like ({ authorId, id, liked, nbLikes}) {
       className='home-page__content__post__bottom__icon'>{
       //ternaire operator to set the correct svg depending of the like
       isLiked ? solidHeart : emptyHeart
-      }<span>{nbLikes}</span></span>
+      }<span>{isLiked ? nbLikesState : nbLikes}</span></span>
     </React.Fragment>
   )
 }
