@@ -8,7 +8,7 @@ import { faImage  } from '@fortawesome/free-solid-svg-icons'
 
 function NewPostBlock ({onImageChange, img, imgForm, textForm, deleteImage, HandleSubmit}) {  
   const [text, setText] = useState('');
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState('');
 
   //use the useEffect hook to prevent sending null data to the api and always send the correct value
   useEffect(() => {
