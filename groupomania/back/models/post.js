@@ -22,7 +22,11 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true
     },
     text: DataTypes.STRING,
-    image: DataTypes.STRING,
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: ''
+    },
   }, {
     sequelize,
     modelName: 'post',

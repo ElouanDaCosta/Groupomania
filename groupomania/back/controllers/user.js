@@ -100,14 +100,14 @@ exports.updateUser = (req, res, next) => {
       //if the req.userId is equal to the target userId, execute the function
       if (req.userId === user.id) {
         //if there is a file, used multer to delete the old file and save the new
-        if (req.file) {
-        const imageName = user.image.split('/images/')[1];
-          fs.unlink(`images/${imageName}`, (error) => {
-            if (error) {
-              res.status(500).json({ error: 'Erreur lors de la suppression de l\'image' });
-              return
-            }
-          })  
+        if (user.image !== '') {
+          const imageName = user.image.split('/images/')[1];
+            fs.unlink(`images/${imageName}`, (error) => {
+              if (error) {
+                res.status(500).json({ error: 'Erreur lors de la suppression de l\'image' });
+                return
+              }
+            })  
         }
         const temp = JSON.stringify(req.body);
         const userObject = JSON.parse(temp);
@@ -151,22 +151,27 @@ exports.deleteUser = (req, res, next) => {
     .then(user => {
       //if the req user id is equal to the user id, execute the function
       if (req.userId === user.id) {
-        const imageName = user.image.split('/images/')[1];
-          fs.unlink(`images/${imageName}`, (error) => {
-            if (error) {
-              res.status(500).json({ error: 'Erreur lors de la suppression de l\'image' });
-              return
-            }
-          })
+        if (user.image !== '') {
+          const imageName = user.image.split('/images/')[1];
+            fs.unlink(`images/${imageName}`, (error) => {
+              if (error) {
+                res.status(500).json({ error: 'Erreur lors de la suppression de l\'image' });
+                return
+              }
+            })
+        }
           //destroy all the posts of the user
         Post.destroy({where: {userId: req.params.id}})
           .then(() => {
-            res.status(200).json({ message: 'Post of the user has been deleted' });
+            //destroy the user
+            User.destroy({where: {id: req.params.id}})
+              .then(() => res.status(200).json({ message: 'Utilisateur supprimé !' }))
+              .catch(error => res.status(500).json({ error }));
           })
           .catch(error => res.status(500).json({ error }));
-        user.destroy()
+        /*user.destroy()
           .then(() => res.status(205).json({ message: 'User deleted' }))
-          .catch(error => res.status(500).json({ error }));
+          .catch(error => res.status(500).json({ error }));*/
       } else {
         //if you are not the user you can't delete it
         res.status(401).json({ error: 'Vous n\'avez pas le droit d\'effectuer cette action !' });
